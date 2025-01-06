@@ -298,7 +298,7 @@ class Program
                 
                 while (sw.ElapsedMilliseconds < TEST_DURATION_MS)
                 {
-                    // 모든 서버에서 키를 검색
+                    // Search for keys on all servers
                     foreach (var endpoint in endpoints)
                     {
                         var server = cluster.Connection.GetServer(endpoint);
@@ -306,7 +306,7 @@ class Program
                         {
                             try
                             {
-                                // SCAN 명령어를 사용하여 키 검색
+                                // Use the SCAN command to search for keys
                                 await foreach (var key in server.KeysAsync(pattern: "{test}:*", pageSize: 100))
                                 {
                                     count++;
@@ -319,7 +319,7 @@ class Program
                         }
                     }
 
-                    // 첫 번째 반복에서 키가 없다면 테스트 키 생성
+                    // If no keys are found in the first iteration, create test keys
                     if (count == 0)
                     {
                         var db = cluster.Connection.GetDatabase();
@@ -329,7 +329,7 @@ class Program
                         }
                     }
                     
-                    // 한 번 검색 후 종료 (무한 루프 방지)
+                    // Stop after one search (to prevent infinite loop)
                     break;
                 }
                 
