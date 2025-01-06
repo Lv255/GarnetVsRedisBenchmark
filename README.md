@@ -1,6 +1,3 @@
-Here's a detailed README.md for the Redis vs Garnet benchmark code:
-
-```markdown
 # Redis vs Garnet Performance Benchmark
 
 A comprehensive performance testing tool designed to compare Redis and Microsoft Garnet (Redis-compatible interface) clusters across various operations and data structures.
