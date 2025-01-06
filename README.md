@@ -179,3 +179,44 @@ This project is available under the MIT License.
 ## Contact
 
 For questions and support, please open an issue in the repository.
+
+## Setting Up Docker Clusters
+
+To set up the Garnet and Redis clusters using Docker, follow these steps:
+
+**Garnet Cluster Setup**
+
+1. Run the following command to start a Garnet cluster node:
+```
+docker run -d --restart=always --network=host --ulimit memlock=-1 ghcr.io/microsoft/garnet --cluster --checkpointdir /data/cluster1 --port 7002
+```
+This command starts a Garnet cluster node with the specified configuration.
+
+**Redis Cluster Setup**
+
+1. Create a `docker-compose.yml` file with the following content:
+```
+version: '3'
+services:
+  redis-node:
+    image: redis:latest
+    command: redis-server --port 7001 --cluster-enabled yes --cluster-config-file nodes.conf --cluster-node-timeout 5000 --appendonly yes --cluster-announce-ip [machine's_actual_IP] --cluster-announce-port 7001 --cluster-announce-bus-port 17001
+    ports:
+      - "7001:7001"      # client port
+      - "17001:17001"    # cluster communication port
+    networks:
+      - redis-cluster
+```
+2. Replace `[machine's_actual_IP]` with the actual IP address of your machine.
+3. Run `docker-compose up` to start the Redis cluster nodes.
+4. To create the Redis cluster, run the following command:
+```
+redis-cli --cluster create 192.168.5.152:7001 192.168.5.154:7001 192.168.5.160:7001 --cluster-yes
+```
+This command creates a Redis cluster with the specified nodes.
+
+**Note**: Ensure to replace the IP addresses with the actual IP addresses of your machines.
+
+**Cluster Creation Command Explanation**
+
+The command `redis-cli --cluster create 192.168.5.152:7002 192.168.5.154:7002 192.168.5.160:7002 --cluster-yes` is used to create a cluster for both Garnet and Redis. This command initializes a cluster with the specified nodes, ensuring they are connected and ready for operations. The `--cluster-yes` flag confirms the creation of the cluster without additional prompts. This step is crucial for both Garnet and Redis clusters to ensure they are properly configured and ready for performance testing.
