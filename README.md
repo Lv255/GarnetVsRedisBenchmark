@@ -216,7 +216,3 @@ redis-cli --cluster create 192.168.5.152:7001 192.168.5.154:7001 192.168.5.160:7
 This command creates a Redis cluster with the specified nodes.
 
 **Note**: Ensure to replace the IP addresses with the actual IP addresses of your machines.
-
-**Cluster Creation Command Explanation**
-
-The command `redis-cli --cluster create 192.168.5.152:7002 192.168.5.154:7002 192.168.5.160:7002 --cluster-yes` is used to create a cluster for both Garnet and Redis. This command initializes a cluster with the specified nodes, ensuring they are connected and ready for operations. The `--cluster-yes` flag confirms the creation of the cluster without additional prompts. This step is crucial for both Garnet and Redis clusters to ensure they are properly configured and ready for performance testing.
